@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.media.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane blendMode="DARKEN" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MySceneController">
+	<top>
+		<MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
+			<menus>
+				<Menu mnemonicParsing="false" text="File">
+					<items>
+						<MenuItem mnemonicParsing="false" onAction="#handleButtonAction" text="Open..." />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Edit">
+					<items>
+						<MenuItem mnemonicParsing="false" text="Delete" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Help">
+					<items>
+						<MenuItem mnemonicParsing="false" text="About" />
+					</items>
+				</Menu>
+			</menus>
+		</MenuBar>
+	</top>
+   <center>
+      <MediaView fx:id="mv" blendMode="DARKEN" fitHeight="400.0" fitWidth="600.0" BorderPane.alignment="CENTER" />
+   </center>
+   <bottom>
+      <VBox prefHeight="81.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="53.0" prefWidth="800.0">
+               <children>
+                  <Slider fx:id="sliderTime" prefHeight="50.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="800.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#Play" text="Play" />
+                  <Button mnemonicParsing="false" onAction="#Pause" text="Pause" />
+                  <Button mnemonicParsing="false" onAction="#Fast" text="Fast" />
+                  <Button mnemonicParsing="false" onAction="#Slow" text="Slow" />
+                  <Button mnemonicParsing="false" onAction="#Reload" text="Reload" />
+                  <Slider fx:id="slVolume" />
+                  <Button mnemonicParsing="false" text="FullScreen" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </bottom>
+</BorderPane>
