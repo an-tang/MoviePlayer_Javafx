@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.media.*?>
 <?import java.lang.*?>
@@ -44,12 +46,16 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="1000.0">
                <children>
+                  <JFXButton alignment="CENTER" onAction="#volumeUp" styleClass="buttonPlay" text="VolumeUp" />
+                  <JFXButton alignment="CENTER" onAction="#volumeDown" styleClass="buttonPlay" text="VolumeDown" />
+                  <JFXButton alignment="CENTER" onAction="#skipForward" styleClass="buttonPlay" text="SkipForward" />
+                  <JFXButton alignment="CENTER" onAction="#skipBack" styleClass="buttonPlay" text="SkipBack" />
                   <Button mnemonicParsing="false" onAction="#Play" text="Play" />
                   <Button mnemonicParsing="false" onAction="#Pause" text="Pause" />
                   <Button mnemonicParsing="false" onAction="#Fast" text="Fast" />
                   <Button mnemonicParsing="false" onAction="#Slow" text="Slow" />
                   <Button mnemonicParsing="false" onAction="#Reload" text="Reload" />
-                  <Slider fx:id="slVolume" />
+                  <Slider fx:id="sliderVolume" />
                   <Button mnemonicParsing="false" text="FullScreen" />
                </children>
             </HBox>
