@@ -301,14 +301,16 @@ public class Controller implements Initializable {
 		
 	}
 
-	@FXML  // <== perhaps you had this missing??
+	@FXML 
 	void keyPressed(KeyEvent event) {
 		switch (event.getCode()) {
 		case LEFT:
+		case KP_LEFT:
 		case F:
 			this.skipBack(new ActionEvent());
 			break;
 		case RIGHT:
+		case KP_RIGHT:
 		case J:
 			this.skipForward(new ActionEvent());
 			break;
