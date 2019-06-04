@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -17,7 +18,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			URL url = getClass().getResource("MyScene.fxml");
+			URL url = getClass().getResource("MainScene.fxml");
 			if (url == null) {
 				Platform.exit();
 				return;
@@ -45,6 +46,8 @@ public class Main extends Application {
 			});
 			primaryStage.setTitle("Movie Explorer");
 			primaryStage.setScene(scene);
+			//primaryStage.setFullScreen(true);
+			//primaryStage.initStyle(StageStyle.UTILITY);
 			primaryStage.show();
 
 		} catch (Exception e) {

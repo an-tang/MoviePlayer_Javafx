@@ -1,8 +1,6 @@
 package application;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -35,11 +33,13 @@ public class MySceneController implements Initializable {
 	@FXML
 	private Slider sliderVolume;
 	@FXML
-	private BorderPane mainPane;
-	@FXML
 	private Label lbTime;
 	@FXML
 	private Label lbMaxTime;
+	
+	@FXML
+	private AnchorPane mainPane; 
+	
 	private MediaPlayer mediaplayer;
 
 	private double rate = 1;
@@ -62,15 +62,18 @@ public class MySceneController implements Initializable {
 
 			mediaplayer.setAutoPlay(true);
 			mv.setMediaPlayer(mediaplayer);
+			
 			DoubleProperty width = mv.fitWidthProperty();
 			DoubleProperty height = mv.fitHeightProperty();
+			
 			width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
 			height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
 
+			mv.fitWidthProperty().bind(mainPane.widthProperty());
+			mv.fitHeightProperty().bind(mainPane.heightProperty());
 			// mediapplayer.setCycleCount(MediaPlayer.INDEFINITE);
 			mediaplayer.play();
 			mediaplayer.setOnReady(new Runnable() {
-
 				@Override
 				public void run() {
 					sliderTime.setMaxWidth(mediaplayer.getMedia().getWidth() - 100);

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="mainPane" prefHeight="675.0" prefWidth="1200.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <children>
+      <MediaView fx:id="mv" fitHeight="500.0" fitWidth="700.0" nodeOrientation="INHERIT" AnchorPane.bottomAnchor="167.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="454.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="controlPane" layoutX="10.0" layoutY="606.0" prefHeight="27.0" prefWidth="1180.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <children>
+            <HBox alignment="CENTER" layoutX="352.0" layoutY="4.0" prefHeight="26.0" prefWidth="231.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="352.0" AnchorPane.rightAnchor="352.0" AnchorPane.topAnchor="3.0">
+               <children>
+                  <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#skipBack" prefHeight="25.0" prefWidth="42.0" styleClass="buttonPlay">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="BACKWARD" size="20" />
+                     </graphic>
+                  </Button>
+                  <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Play" prefHeight="25.0" prefWidth="42.0" styleClass="buttonPlay">
+                     <HBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </HBox.margin>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="icPlay" fill="WHITE" glyphName="PLAY" size="20" />
+                     </graphic>
+                  </Button>
+                  <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#skipForward" prefHeight="25.0" prefWidth="42.0" styleClass="buttonPlay">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="FORWARD" size="20" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Button layoutX="1129.0" layoutY="4.0" mnemonicParsing="false" styleClass="buttonPlay" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="17.0">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="EXPAND" size="20" />
+               </graphic></Button>
+            <MenuButton alignment="CENTER" layoutX="1060.0" layoutY="4.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" styleClass="buttonPlay" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="70.0">
+              <items>
+                  <Menu mnemonicParsing="false" text="Speed">
+                    <items>
+                      <MenuItem fx:id="item025" mnemonicParsing="false" text="0.25" />
+                        <MenuItem fx:id="item05" mnemonicParsing="false" text="0.5" />
+                        <MenuItem fx:id="item075" mnemonicParsing="false" text="0.75" />
+                        <MenuItem fx:id="item1" mnemonicParsing="false" text="Normal" />
+                        <MenuItem fx:id="item125" mnemonicParsing="false" text="1.25" />
+                        <MenuItem fx:id="item15" mnemonicParsing="false" text="1.5" />
+                        <MenuItem fx:id="item175" mnemonicParsing="false" text="1.75" />
+                        <MenuItem fx:id="item2" mnemonicParsing="false" text="2" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Skip">
+                    <items>
+                      <MenuItem fx:id="item5s" mnemonicParsing="false" text="5 (s)" />
+                        <MenuItem fx:id="item10s" mnemonicParsing="false" text="10 (s)" />
+                        <MenuItem fx:id="item15s" mnemonicParsing="false" text="15 (s)" />
+                        <MenuItem fx:id="item30s" mnemonicParsing="false" text="30 (s)" />
+                    </items>
+                  </Menu>
+              </items>
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="GEAR" size="20" />
+               </graphic>
+            </MenuButton>
+            <Button fx:id="btnBrowse" layoutX="4.0" layoutY="4.0" mnemonicParsing="false" onAction="#handleButtonAction" styleClass="buttonPlay">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="FOLDER_OPEN" size="20" />
+               </graphic></Button>
+            <JFXSlider fx:id="slVolume" layoutX="110.0" layoutY="9.0" styleClass="jfx-slider" />
+            <Button fx:id="btnVolume" layoutX="58.0" layoutY="4.0" mnemonicParsing="false" styleClass="buttonPlay">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="VOLUME_UP" size="20" />
+               </graphic></Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="3.0" layoutY="536.0" prefHeight="33.0" prefWidth="1194.0" AnchorPane.bottomAnchor="106.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0">
+         <children>
+            <JFXSlider fx:id="slTime" layoutX="60.0" layoutY="7.0" prefHeight="14.0" prefWidth="1075.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="59.0" AnchorPane.topAnchor="7.0" />
+            <Label fx:id="lbTime" alignment="CENTER" layoutX="12.0" layoutY="6.0" prefHeight="17.0" prefWidth="42.0" text="0:00" textFill="#f8f5f5" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="12.0" />
+            <Label fx:id="lbMaxTime" alignment="CENTER" contentDisplay="CENTER" layoutX="1150.0" layoutY="6.0" prefHeight="17.0" prefWidth="42.0" text="0:00" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
