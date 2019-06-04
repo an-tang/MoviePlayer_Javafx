@@ -31,6 +31,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Controller implements Initializable {
@@ -54,7 +55,31 @@ public class Controller implements Initializable {
 	@FXML
 	private MenuItem item025;
 	@FXML
+	private MenuItem item075;
+	@FXML
+	private MenuItem item05;
+	@FXML
+	private MenuItem item1;
+	@FXML
+	private MenuItem item125;
+	@FXML
+	private MenuItem item15;
+	@FXML
+	private MenuItem item175;
+	@FXML
+	private MenuItem item2;
+	@FXML
+	private MenuItem item5s;
+	@FXML
+	private MenuItem item10s;
+	@FXML
+	private MenuItem item15s;
+	@FXML
+	private MenuItem item30s;
+	@FXML
 	private Button btnBrowse;
+	@FXML
+	private Button btnFullScreen;
 
 	private MediaPlayer mediaplayer;
 	private boolean isPlaying = false;
@@ -74,10 +99,6 @@ public class Controller implements Initializable {
 
 	@FXML
 	private void handleButtonAction(ActionEvent event) throws MalformedURLException, ClassNotFoundException {
-//		if(mediaplayer != null) {
-//			
-//		}
-
 		FileChooser filechooser = new FileChooser();
 		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Select only mp4 file", "*.mp4");
 		filechooser.getExtensionFilters().add(filter);
@@ -86,77 +107,26 @@ public class Controller implements Initializable {
 			filePath = file.toURI().toURL().toString();
 
 		if (filePath != null) {
+			if (mediaplayer != null)
+				mediaplayer.stop();
 			Media media = new Media(filePath);
 			mediaplayer = new MediaPlayer(media);
 
 			mediaplayer.setAutoPlay(true);
 			mv.setMediaPlayer(mediaplayer);
+
 			DoubleProperty width = mv.fitWidthProperty();
 			DoubleProperty height = mv.fitHeightProperty();
 			width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
 			height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
 
-		
-			
 			mv.setPreserveRatio(false);
-//			mv.fitWidthProperty().bind(mainPane.widthProperty());
-//			mv.fitHeightProperty().bind(mainPane.heightProperty());
-
-			// mediapplayer.setCycleCount(MediaPlayer.INDEFINITE);
 			mediaplayer.play();
-			mediaplayer.setOnReady(new Runnable() {
-
-				@Override
-				public void run() {
-					slTime.setMaxWidth(mediaplayer.getMedia().getWidth() - 100);
-					slTime.setMin(0.0);
-					slTime.setValue(0.0);
-					slTime.setMax(mediaplayer.getTotalDuration().toSeconds());
-					slTime.prefWidthProperty().bind(mainPane.widthProperty());
-					double maxTime = mediaplayer.getTotalDuration().toSeconds();
-					lbMaxTime.setText(convertTime((String.valueOf(maxTime))));
-
-				}
-			});
-
-			mediaplayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-				@Override
-				public void changed(ObservableValue<? extends Duration> observableValue, Duration duration,
-						Duration current) {
-					slTime.setValue(current.toSeconds());
-					lbTime.setText(convertTime(String.valueOf(slTime.getValue())));
-				}
-			});
-
-			slTime.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent arg0) {
-					mediaplayer.seek(Duration.seconds(slTime.getValue()));
-
-				}
-			});
-
-			slVolume.setValue(mediaplayer.getVolume() * 100 / 2);
-			slVolume.valueProperty().addListener(new InvalidationListener() {
-				@Override
-				public void invalidated(Observable observable) {
-					mediaplayer.setVolume(slVolume.getValue() / 100);
-				}
-			});
-
-			item025.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) {
-					rate = 0.25;
-					mediaplayer.setRate(rate);
-				}
-			});
-			icPlay.setGlyphName("PAUSE");
+			Initialize();
 		}
 	}
 
-	public void Volume(ActionEvent event) {
+	public void showVolume(ActionEvent event) {
 		slVolume.setVisible(true);
 	}
 
@@ -170,16 +140,6 @@ public class Controller implements Initializable {
 			isPlaying = true;
 			icPlay.setGlyphName("PAUSE");
 		}
-	}
-
-	public void Fast(ActionEvent event) {
-		rate += 0.25;
-		mediaplayer.setRate(rate);
-	}
-
-	public void Slow(ActionEvent event) {
-		rate -= 0.25;
-		mediaplayer.setRate(rate);
 	}
 
 	public void Reload(ActionEvent event) {
@@ -237,6 +197,156 @@ public class Controller implements Initializable {
 				lbTime.setText(convertTime(String.valueOf(slTime.getValue())));
 			}
 		});
+	}
+
+	@FXML
+	private void fullScreen(ActionEvent event) {
+		Stage stage = (Stage) btnFullScreen.getScene().getWindow();
+		if (!Main.isFullScreen) {
+			stage.setFullScreen(true);
+			Main.isFullScreen = true;
+		} else {
+			stage.setFullScreen(false);
+			Main.isFullScreen = false;
+		}
+	}
+
+	private void Initialize() {
+		item025.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 0.25;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item05.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 0.5;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item075.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 0.75;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 1;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item125.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 1.25;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item15.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 1.5;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item175.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 1.75;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				rate = 2;
+				mediaplayer.setRate(rate);
+			}
+		});
+
+		item5s.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				skip = 5;
+			}
+		});
+
+		item10s.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				skip = 10;
+			}
+		});
+
+		item15s.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				skip = 15;
+			}
+		});
+
+		item30s.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				skip = 30;
+			}
+		});
+
+		slVolume.setValue(mediaplayer.getVolume() * 100 / 2);
+		slVolume.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				mediaplayer.setVolume(slVolume.getValue() / 100);
+			}
+		});
+
+		slTime.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				mediaplayer.seek(Duration.seconds(slTime.getValue()));
+
+			}
+		});
+
+		mediaplayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+			@Override
+			public void changed(ObservableValue<? extends Duration> observableValue, Duration duration,
+					Duration current) {
+				slTime.setValue(current.toSeconds());
+				lbTime.setText(convertTime(String.valueOf(slTime.getValue())));
+			}
+		});
+
+		mediaplayer.setOnReady(new Runnable() {
+			@Override
+			public void run() {
+				slTime.setMaxWidth(mediaplayer.getMedia().getWidth() - 100);
+				slTime.setMin(0.0);
+				slTime.setValue(0.0);
+				slTime.setMax(mediaplayer.getTotalDuration().toSeconds());
+				slTime.prefWidthProperty().bind(mainPane.widthProperty());
+				double maxTime = mediaplayer.getTotalDuration().toSeconds();
+				lbMaxTime.setText(convertTime((String.valueOf(maxTime))));
+			}
+		});
+
+//		mv.fitWidthProperty().bind(mainPane.widthProperty());
+//		mv.fitHeightProperty().bind(mainPane.heightProperty());
+
+//		mediapplayer.setCycleCount(MediaPlayer.INDEFINITE);
+		icPlay.setGlyphName("PAUSE");
 	}
 
 	public String convertTime(String times) {
