@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXSlider;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -21,8 +20,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -45,13 +46,17 @@ public class Controller implements Initializable {
 	@FXML
 	private AnchorPane sliderTimePane;
 	@FXML
+	private HBox hboxVolume;
+	@FXML
 	private Label lbTime;
 	@FXML
 	private Label lbMaxTime;
 	@FXML
 	private Button btnVolume;
 	@FXML
-	private FontAwesomeIconView icPlay;
+	private FontAwesomeIconView iconPlay;
+	@FXML
+	private FontAwesomeIconView iconVolume;
 	@FXML
 	private MenuItem item025;
 	@FXML
@@ -87,14 +92,92 @@ public class Controller implements Initializable {
 	private double volume = 5;
 	private double skip = 5;
 	private String filePath;
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		slVolume.setValue(0);
 		slTime.setValue(0);
-		icPlay.setGlyphName("PLAY");
+		iconPlay.setGlyphName("PLAY");
 		isPlaying = true;
-		slVolume.setVisible(false);
+		slVolume.setVisible(true);
+		hboxVolume.setVisible(false);
+		
+		btnVolume.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if(btnVolume.isHover()) {
+					System.out.println("btn hover");
+					hboxVolume.setVisible(true);
+				}
+					
+			}
+			
+		});
+		
+		btnVolume.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if(!btnVolume.isHover())
+					new java.util.Timer().schedule(new java.util.TimerTask() {
+						@Override
+						public void run() {
+							hboxVolume.setVisible(false);
+						}
+					}, 3000);
+				
+			}
+		});
+//		
+//		hboxVolume.setOnMouseEntered(new EventHandler<MouseEvent>() {
+//			@Override
+//			public void handle(MouseEvent event) {
+//				if(hboxVolume.isHover()) {
+//					
+//					System.out.println("hover slider");
+//				  hboxVolume.setVisible(true);
+//			}
+//			}
+//		});
+//		
+//		hboxVolume.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
+//			  @Override
+//	          public void handle(MouseEvent e) {
+//				  if(hboxVolume.isHover())
+//					  hboxVolume.setVisible(true);
+//				  else {
+//				new java.util.Timer().schedule(new java.util.TimerTask() {
+//					@Override
+//					public void run() {
+//						hboxVolume.setVisible(false);
+//					}
+//				}, 3000);
+//				  }
+//			}
+//		});
+		
+		
+		mainPane.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if(mainPane.isHover()) {
+					System.out.println("main pane");
+				new java.util.Timer().schedule(new java.util.TimerTask() {
+					@Override
+					public void run() {
+						sliderTimePane.setVisible(false);
+					}
+				}, 3000);
+			}
+			}
+		});
+		
+		mainPane.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				  sliderTimePane.setVisible(true);
+				
+			}
+		});
 	}
 
 	@FXML
@@ -126,25 +209,25 @@ public class Controller implements Initializable {
 		}
 	}
 
-	public void showVolume(ActionEvent event) {
-		slVolume.setVisible(true);
-	}
-
 	public void Play(ActionEvent event) {
-		if (isPlaying) {
-			mediaplayer.pause();
-			isPlaying = false;
-			icPlay.setGlyphName("PLAY");
-		} else {
-			mediaplayer.play();
-			isPlaying = true;
-			icPlay.setGlyphName("PAUSE");
+		if(mediaplayer != null) {
+			if (isPlaying) {
+				mediaplayer.pause();
+				isPlaying = false;
+				iconPlay.setGlyphName("PLAY");
+			} else {
+				mediaplayer.play();
+				isPlaying = true;
+				iconPlay.setGlyphName("PAUSE");
+			}
 		}
 	}
 
 	public void Reload(ActionEvent event) {
-		mediaplayer.seek(mediaplayer.getStartTime());
-		mediaplayer.play();
+		if (mediaplayer != null) {
+			mediaplayer.seek(mediaplayer.getStartTime());
+			mediaplayer.play();
+		}
 	}
 
 	public void volumeUp(ActionEvent event) {
@@ -152,8 +235,7 @@ public class Controller implements Initializable {
 		slVolume.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-
-				mediaplayer.setVolume(slVolume.getValue() / 100);
+				mediaplayer.setVolume(slVolume.getValue() / 100);				
 			}
 		});
 	}
@@ -163,40 +245,46 @@ public class Controller implements Initializable {
 		slVolume.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-
 				mediaplayer.setVolume(slVolume.getValue() / 100);
+				if(slVolume.getValue() == 0) {
+					iconVolume.setGlyphName("VOLUME_OFF");
+				}
 			}
 		});
 	}
 
 	public void skipForward(ActionEvent event) {
-		slTime.setValue(slTime.getValue() + skip);
-		mediaplayer.seek(Duration.seconds(slTime.getValue()));
+		if (mediaplayer != null) {
+			slTime.setValue(slTime.getValue() + skip);
+			mediaplayer.seek(Duration.seconds(slTime.getValue()));
 
-		mediaplayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-			@Override
-			public void changed(ObservableValue<? extends Duration> observableValue, Duration duration,
-					Duration current) {
+			mediaplayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+				@Override
+				public void changed(ObservableValue<? extends Duration> observableValue, Duration duration,
+						Duration current) {
 
-				// sliderTime.setValue(current.toSeconds());
-				lbTime.setText(convertTime(String.valueOf(slTime.getValue())));
-			}
-		});
+					// sliderTime.setValue(current.toSeconds());
+					lbTime.setText(convertTime(String.valueOf(slTime.getValue())));
+				}
+			});
+		}
 	}
 
 	public void skipBack(ActionEvent event) {
-		slTime.setValue(slTime.getValue() - skip);
-		mediaplayer.seek(Duration.seconds(slTime.getValue()));
+		if (mediaplayer != null) {
+			slTime.setValue(slTime.getValue() - skip);
+			mediaplayer.seek(Duration.seconds(slTime.getValue()));
 
-		mediaplayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-			@Override
-			public void changed(ObservableValue<? extends Duration> observableValue, Duration duration,
-					Duration current) {
+			mediaplayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+				@Override
+				public void changed(ObservableValue<? extends Duration> observableValue, Duration duration,
+						Duration current) {
 
-				// sliderTime.setValue(current.toSeconds());
-				lbTime.setText(convertTime(String.valueOf(slTime.getValue())));
-			}
-		});
+					// sliderTime.setValue(current.toSeconds());
+					lbTime.setText(convertTime(String.valueOf(slTime.getValue())));
+				}
+			});
+		}
 	}
 
 	@FXML
@@ -209,8 +297,35 @@ public class Controller implements Initializable {
 			stage.setFullScreen(false);
 			Main.isFullScreen = false;
 		}
+		
+		
 	}
 
+	@FXML  // <== perhaps you had this missing??
+	void keyPressed(KeyEvent event) {
+		switch (event.getCode()) {
+		case LEFT:
+		case F:
+			this.skipBack(new ActionEvent());
+			break;
+		case RIGHT:
+		case J:
+			this.skipForward(new ActionEvent());
+			break;
+		case UP:
+			this.volumeUp(new ActionEvent());
+			break;
+		case DOWN:
+			this.volumeDown(new ActionEvent());
+			break;
+		case SPACE:
+			this.Play(new ActionEvent());
+			break;
+		default:
+			break;
+		}
+	}
+	
 	private void Initialize() {
 		item025.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -346,7 +461,9 @@ public class Controller implements Initializable {
 //		mv.fitHeightProperty().bind(mainPane.heightProperty());
 
 //		mediapplayer.setCycleCount(MediaPlayer.INDEFINITE);
-		icPlay.setGlyphName("PAUSE");
+		iconPlay.setGlyphName("PAUSE");
+		
+		
 	}
 
 	public String convertTime(String times) {
