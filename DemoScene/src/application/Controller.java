@@ -21,12 +21,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -44,6 +40,10 @@ public class Controller implements Initializable {
 	private JFXSlider slTime;
 	@FXML
 	private AnchorPane mainPane;
+	@FXML
+	private AnchorPane controlPane;
+	@FXML
+	private AnchorPane sliderTimePane;
 	@FXML
 	private Label lbTime;
 	@FXML
