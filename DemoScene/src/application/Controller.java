@@ -47,8 +47,6 @@ public class Controller implements Initializable {
 	@FXML
 	private AnchorPane controlPane;
 	@FXML
-	private AnchorPane sliderTimePane;
-	@FXML
 	private Label lbTime;
 	@FXML
 	private Label lbMaxTime;
@@ -96,11 +94,12 @@ public class Controller implements Initializable {
 	private double volume = 5;
 	private double skip = 5;
 	private String filePath;
+	private double oldVolume = 0;
 	TimerTask task = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		slVolume.setValue(0);
+		slVolume.setValue(50);
 		slTime.setValue(0);
 		iconPlay.setGlyphName("PLAY");
 		isPlaying = true;
@@ -110,8 +109,8 @@ public class Controller implements Initializable {
 		btnVolume.hoverProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable arg0) {
-//				if(btnVolume.isHover())
-				slVolume.setVisible(true);
+				if (btnVolume.isHover())
+					slVolume.setVisible(true);
 				if (!btnVolume.isHover()) {
 					task = createTask(task);
 					timer.schedule(task, countdown);
@@ -132,7 +131,8 @@ public class Controller implements Initializable {
 		slVolume.hoverProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable arg0) {
-				slVolume.setVisible(true);
+				if (slVolume.isHover())
+					slVolume.setVisible(true);
 				if (!slVolume.isHover()) {
 					task = createTask(task);
 					timer.schedule(task, countdown);
@@ -143,31 +143,46 @@ public class Controller implements Initializable {
 			}
 		});
 
-		mainPane.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+		controlPane.hoverProperty().addListener(new InvalidationListener() {
 			@Override
-			public void handle(MouseEvent e) {
-				new java.util.Timer().schedule(new java.util.TimerTask() {
-					@Override
-					public void run() {
-						sliderTimePane.setVisible(false);
-					}
-				}, 3000);
+			public void invalidated(Observable observable) {
+				controlPane.setVisible(true);
+				if (!controlPane.isHover()) {
+					System.out.println("control");
+					task = createPaneTask(task);
+					timer.schedule(task, countdown);
+					lsTask.add(task);
+				}
+				if (lsTask.size() > 1)
+					lsTask.removeFirst().cancel();
 			}
+		});
 
+		mainPane.hoverProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				controlPane.setVisible(true);
+				if (!mainPane.isHover() || !controlPane.isHover()) {
+					System.out.println("main   ");
+					task = createPaneTask(task);
+					timer.schedule(task, countdown);
+					lsTask.add(task);
+				}
+				if (lsTask.size() > 1)
+					lsTask.removeFirst().cancel();
+			}
 		});
 
 		mainPane.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				sliderTimePane.setVisible(true);
-				new java.util.Timer().schedule(new java.util.TimerTask() {
-					@Override
-					public void run() {
-						sliderTimePane.setVisible(false);
-					}
-				}, 2000);
+				controlPane.setVisible(true);
+				task = createPaneTask(task);
+				timer.schedule(task, countdown);
+				lsTask.add(task);
+				if (lsTask.size() > 1)
+					lsTask.removeFirst().cancel();
 			}
-
 		});
 	}
 
@@ -223,6 +238,7 @@ public class Controller implements Initializable {
 
 	public void volumeUp(ActionEvent event) {
 		slVolume.setValue(slVolume.getValue() + volume);
+		iconVolume.setGlyphName("VOLUME_UP");
 		slVolume.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
@@ -320,6 +336,11 @@ public class Controller implements Initializable {
 		default:
 			break;
 		}
+	}
+
+	@FXML
+	void mouseClicked(MouseEvent event) {
+		controlPane.setVisible(false);
 	}
 
 	private void Initialize() {
@@ -506,5 +527,38 @@ public class Controller implements Initializable {
 			}
 		};
 		return task;
+	}
+
+	private TimerTask createPaneTask(TimerTask task) {
+		task = new TimerTask() {
+			@Override
+			public void run() {
+				System.out.println("pane task timer");
+				controlPane.setVisible(false);
+				if (!(slVolume.isHover() && btnVolume.isHover()))
+					slVolume.setVisible(false);
+			}
+		};
+		return task;
+	}
+
+	@FXML
+	void muteVolume(ActionEvent event) {
+		System.out.println("mute volume");
+		double temp = slVolume.getValue();
+		if (temp == 0) {
+			slVolume.setValue(oldVolume);
+			iconVolume.setGlyphName("VOLUME_UP");
+		} else {
+			oldVolume = slVolume.getValue();
+			slVolume.setValue(0);
+			iconVolume.setGlyphName("VOLUME_OFF");
+		}
+		slVolume.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				mediaplayer.setVolume(slVolume.getValue() / 100);
+			}
+		});
 	}
 }
