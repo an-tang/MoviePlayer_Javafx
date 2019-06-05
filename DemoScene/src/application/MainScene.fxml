@@ -77,11 +77,7 @@
                <graphic>
                   <FontAwesomeIconView fx:id="iconVolume" fill="WHITE" glyphName="VOLUME_UP" size="20" />
                </graphic></Button>
-            <HBox fx:id="hboxVolume" layoutX="95.0" layoutY="10.0" prefHeight="17.0" prefWidth="141.0">
-               <children>
-                  <JFXSlider fx:id="slVolume" styleClass="jfx-slider" />
-               </children>
-            </HBox>
+            <JFXSlider fx:id="slVolume" layoutX="93.0" layoutY="10.0" styleClass="jfx-slider" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="sliderTimePane" layoutX="3.0" layoutY="536.0" prefHeight="33.0" prefWidth="1194.0" AnchorPane.bottomAnchor="106.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0">

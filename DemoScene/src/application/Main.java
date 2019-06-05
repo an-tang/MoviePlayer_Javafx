@@ -42,7 +42,6 @@ public class Main extends Application {
 			primaryStage.setTitle("Movie Explorer");
 			primaryStage.setScene(scene);
 			primaryStage.show();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
