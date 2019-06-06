@@ -14,9 +14,9 @@
 <AnchorPane fx:id="mainPane" onKeyPressed="#keyPressed" onMouseClicked="#mouseClicked" prefHeight="675.0" prefWidth="1200.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
       <MediaView fx:id="mv" fitHeight="500.0" fitWidth="700.0" nodeOrientation="INHERIT" AnchorPane.bottomAnchor="167.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="454.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane fx:id="controlPane" layoutX="10.0" layoutY="500.0" prefHeight="176.0" prefWidth="1180.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <AnchorPane fx:id="controlPane" layoutX="-1.0" layoutY="500.0" prefHeight="191.0" prefWidth="1200.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0">
          <children>
-            <HBox alignment="CENTER" layoutX="353.0" layoutY="124.0" prefHeight="36.0" prefWidth="476.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="353.0" AnchorPane.rightAnchor="351.0" AnchorPane.topAnchor="124.0">
+            <HBox alignment="CENTER" layoutX="353.0" layoutY="126.0" prefHeight="40.0" prefWidth="496.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="353.0" AnchorPane.rightAnchor="351.0" AnchorPane.topAnchor="126.0">
                <children>
                   <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#skipBack" prefHeight="35.0" prefWidth="42.0" styleClass="buttonPlay">
                      <graphic>
@@ -38,14 +38,14 @@
                   </Button>
                </children>
             </HBox>
-            <Button fx:id="btnFullScreen" layoutX="1129.0" layoutY="125.0" mnemonicParsing="false" onAction="#fullScreen" styleClass="buttonPlay" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="17.0">
+            <Button fx:id="btnFullScreen" layoutX="1149.0" layoutY="147.0" mnemonicParsing="false" onAction="#fullScreen" styleClass="buttonPlay" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="17.0">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="EXPAND" size="20" />
                </graphic>
             </Button>
-            <MenuButton alignment="CENTER" layoutX="1063.0" layoutY="125.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" styleClass="buttonPlay" textFill="WHITE" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="67.0">
+            <MenuButton fx:id="menuSetting" alignment="CENTER" layoutX="1085.0" layoutY="147.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" styleClass="buttonPlay" textFill="WHITE" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="65.0">
               <items>
-                  <Menu mnemonicParsing="false" text="Speed">
+                  <Menu fx:id="mSpeed" mnemonicParsing="false" text="Speed">
                     <items>
                       <MenuItem fx:id="item025" mnemonicParsing="false" text="0.25" />
                         <MenuItem fx:id="item05" mnemonicParsing="false" text="0.5" />
@@ -57,7 +57,7 @@
                         <MenuItem fx:id="item2" mnemonicParsing="false" text="2" />
                     </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Skip">
+                  <Menu fx:id="mSkip" mnemonicParsing="false" text="Skip">
                     <items>
                       <MenuItem fx:id="item5s" mnemonicParsing="false" text="5 (s)" />
                         <MenuItem fx:id="item10s" mnemonicParsing="false" text="10 (s)" />
@@ -70,17 +70,17 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="GEAR" size="20" />
                </graphic>
             </MenuButton>
-            <Button fx:id="btnBrowse" layoutX="13.0" layoutY="125.0" mnemonicParsing="false" onAction="#handleButtonAction" styleClass="buttonPlay">
+            <Button fx:id="btnBrowse" layoutX="14.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleButtonAction" styleClass="buttonPlay">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="FOLDER_OPEN" size="20" />
                </graphic>
             </Button>
-            <Button fx:id="btnVolume" layoutX="60.0" layoutY="125.0" mnemonicParsing="false" onAction="#muteVolume" styleClass="buttonPlay">
+            <Button fx:id="btnVolume" layoutX="60.0" layoutY="140.0" mnemonicParsing="false" onAction="#muteVolume" styleClass="buttonPlay">
                <graphic>
                   <FontAwesomeIconView fx:id="iconVolume" fill="WHITE" glyphName="VOLUME_UP" size="20" />
                </graphic>
             </Button>
-            <JFXSlider fx:id="slVolume" layoutX="109.0" layoutY="130.0" styleClass="jfx-slider" />
+            <JFXSlider fx:id="slVolume" layoutX="108.0" layoutY="147.0" styleClass="jfx-slider" />
             <JFXSlider fx:id="slTime" layoutX="60.0" layoutY="14.0" prefHeight="67.0" prefWidth="1061.0" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="59.0" AnchorPane.topAnchor="14.0" />
             <Label fx:id="lbTime" alignment="CENTER" layoutX="12.0" layoutY="39.0" prefHeight="17.0" prefWidth="42.0" text="0:00" textFill="#f8f5f5" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="12.0" />
             <Label fx:id="lbMaxTime" alignment="CENTER" contentDisplay="CENTER" layoutX="1125.0" layoutY="39.0" prefHeight="17.0" prefWidth="42.0" text="0:00" textFill="WHITE" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="13.0" />

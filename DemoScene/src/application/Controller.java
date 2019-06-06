@@ -23,6 +23,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -84,9 +86,15 @@ public class Controller implements Initializable {
 	private Button btnBrowse;
 	@FXML
 	private Button btnFullScreen;
+	@FXML 
+	private MenuButton menuSetting;
+	@FXML 
+	private Menu mSpeed;
+	@FXML 
+	private Menu mSkip;
 
 	private Timer timer;
-	private long countdown = 2000;
+	private long countdown = 5000;
 	private LinkedList<TimerTask> lsTask = new LinkedList<TimerTask>();
 	private MediaPlayer mediaplayer;
 	private boolean isPlaying = false;
@@ -131,9 +139,9 @@ public class Controller implements Initializable {
 		slVolume.hoverProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable arg0) {
-				if (slVolume.isHover())
 					slVolume.setVisible(true);
-				if (!slVolume.isHover()) {
+				if (slVolume.isHover()) {
+					System.out.println("volume");
 					task = createTask(task);
 					timer.schedule(task, countdown);
 					lsTask.add(task);
@@ -142,17 +150,11 @@ public class Controller implements Initializable {
 					lsTask.removeFirst().cancel();
 			}
 		});
-
+		
 		controlPane.hoverProperty().addListener(new InvalidationListener() {
 			@Override
-			public void invalidated(Observable observable) {
+			public void invalidated(Observable observable) {				
 				controlPane.setVisible(true);
-				if (!controlPane.isHover()) {
-					System.out.println("control");
-					task = createPaneTask(task);
-					timer.schedule(task, countdown);
-					lsTask.add(task);
-				}
 				if (lsTask.size() > 1)
 					lsTask.removeFirst().cancel();
 			}
@@ -163,7 +165,6 @@ public class Controller implements Initializable {
 			public void invalidated(Observable observable) {
 				controlPane.setVisible(true);
 				if (!mainPane.isHover() || !controlPane.isHover()) {
-					System.out.println("main   ");
 					task = createPaneTask(task);
 					timer.schedule(task, countdown);
 					lsTask.add(task);
@@ -176,10 +177,13 @@ public class Controller implements Initializable {
 		mainPane.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				
 				controlPane.setVisible(true);
-				task = createPaneTask(task);
-				timer.schedule(task, countdown);
-				lsTask.add(task);
+				if (!controlPane.isFocused() && !(menuSetting.isFocused() && mSpeed.isShowing() && mSkip.isShowing())) {
+					task = createPaneTask(task);
+					timer.schedule(task, countdown);
+					lsTask.add(task);
+				}
 				if (lsTask.size() > 1)
 					lsTask.removeFirst().cancel();
 			}
@@ -192,12 +196,16 @@ public class Controller implements Initializable {
 		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Select only mp4 file", "*.mp4");
 		filechooser.getExtensionFilters().add(filter);
 		File file = filechooser.showOpenDialog(null);
-		if (file != null)
+		String temp = null;
+		if(filePath != null)
+			temp = filePath;
+		if (file != null) {
 			filePath = file.toURI().toURL().toString();
-
-		if (filePath != null) {
 			if (mediaplayer != null)
-				mediaplayer.stop();
+				if(temp != filePath)
+					mediaplayer.stop();
+				else 
+					mediaplayer.pause();
 			Media media = new Media(filePath);
 			mediaplayer = new MediaPlayer(media);
 
@@ -533,7 +541,6 @@ public class Controller implements Initializable {
 		task = new TimerTask() {
 			@Override
 			public void run() {
-				System.out.println("pane task timer");
 				controlPane.setVisible(false);
 				if (!(slVolume.isHover() && btnVolume.isHover()))
 					slVolume.setVisible(false);
