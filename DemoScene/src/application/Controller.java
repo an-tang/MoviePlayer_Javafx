@@ -141,6 +141,7 @@ public class Controller implements Initializable {
 			public void invalidated(Observable arg0) {
 					slVolume.setVisible(true);
 				if (slVolume.isHover()) {
+					System.out.println("volume");
 					task = createTask(task);
 					timer.schedule(task, countdown);
 					lsTask.add(task);
@@ -176,6 +177,7 @@ public class Controller implements Initializable {
 		mainPane.addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				
 				controlPane.setVisible(true);
 				if (!controlPane.isFocused() && !(menuSetting.isFocused() && mSpeed.isShowing() && mSkip.isShowing())) {
 					task = createPaneTask(task);
@@ -528,6 +530,7 @@ public class Controller implements Initializable {
 		task = new TimerTask() {
 			@Override
 			public void run() {
+				System.out.println("task timer");
 				slVolume.setVisible(false);
 			}
 		};
@@ -548,6 +551,7 @@ public class Controller implements Initializable {
 
 	@FXML
 	void muteVolume(ActionEvent event) {
+		System.out.println("mute volume");
 		double temp = slVolume.getValue();
 		if (temp == 0) {
 			slVolume.setValue(oldVolume);
